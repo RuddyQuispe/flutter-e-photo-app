@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_e_photograph_app/src/libs/http.dart';
+import 'package:flutter_e_photograph_app/src/pages/home_page.dart';
+import 'package:flutter_e_photograph_app/src/pages/register_guest.dart';
 import 'package:flutter_e_photograph_app/src/providers/UserGuest.dart';
 import 'package:flutter_e_photograph_app/src/widgets/FadeAnimations.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -13,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String email, password = "";
   @override
   Widget build(BuildContext context) {
     final userGuest = Provider.of<UserGuest>(context);
@@ -120,7 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                                     hintStyle:
                                         TextStyle(color: Colors.grey[400])),
                                 onChanged: (value) {
-                                  userGuest.email = value;
+                                  setState(() {
+                                    this.email = value;
+                                  });
                                 },
                               ),
                             ),
@@ -135,7 +141,9 @@ class _LoginPageState extends State<LoginPage> {
                                     hintStyle:
                                         TextStyle(color: Colors.grey[400])),
                                 onChanged: (value) {
-                                  userGuest.password = value;
+                                  setState(() {
+                                    this.password = value;
+                                  });
                                 },
                               ),
                             )
@@ -162,22 +170,29 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       color: Color.fromRGBO(143, 148, 254, 1),
-                      onPressed: () {
-                        signIn(userGuest);
+                      onPressed: () async {
+                        bool a = await signIn(userGuest);
+                        print("result $a");
+                        if (await signIn(userGuest)) {
+                          Navigator.pushNamed(context, HomePage.routeName);
+                        }
                       },
                     ),
                     SizedBox(
                       height: 70,
                     ),
                     FadeAnimation(
-                      1.5,
-                      Text(
-                        "Don't have an account?",
-                        style: TextStyle(
-                            color: Color.fromRGBO(143, 148, 251, 1),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
+                        1.5,
+                        InkWell(
+                          child: Text(
+                            "Don't have an account?",
+                            style: TextStyle(
+                                color: Color.fromRGBO(143, 148, 251, 1),
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () => Navigator.pushNamed(
+                              context, RegisterGuest.routeName),
+                        ))
                   ],
                 ),
               )
@@ -192,9 +207,28 @@ class _LoginPageState extends State<LoginPage> {
     try {
       HTTP http = new HTTP();
       var response = await http.post('/api/auth/signin_guest',
-          {"email": userGuest.email, "password": userGuest.password});
-      print(response["body"]);
-      return true;
+          {"email": this.email, "password": this.password});
+      if (response["token"] != null) {
+        Toast.show("${response["message"]}  ${response["name"]}!", context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        print("aqui 1");
+        userGuest.email = this.email;
+        print("aqui 2");
+        // userGuest.password = this.password;
+        print("aqui 3");
+        userGuest.name = response["name"];
+        print("aqui 4");
+        userGuest.token = response["token"];
+        print("aqui 5");
+        print("user name: " + response["name"]);
+        print("aqui 6");
+        setState(() {});
+        return true;
+      } else {
+        Toast.show(response["message"], context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        return false;
+      }
     } catch (e) {
       print("Error in signIn method: $e");
       return false;

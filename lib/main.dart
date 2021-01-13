@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'E-Photo-App',
-          initialRoute: HomePage.routeName,
+          initialRoute: LoginPage.routeName,
           routes: {
             HomePage.routeName: (BuildContext context) => HomePage(),
             LoginPage.routeName: (BuildContext context) => LoginPage(),

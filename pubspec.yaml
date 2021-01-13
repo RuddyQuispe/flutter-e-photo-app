@@ -35,6 +35,8 @@ dependencies:
   qrscan: ^0.2.21
   permission_handler: ^5.0.1+1
   aws_s3_client: ^0.2.0
+  uuid: ^2.2.2
+  toast: ^0.1.5
 
 dev_dependencies:
   flutter_test:

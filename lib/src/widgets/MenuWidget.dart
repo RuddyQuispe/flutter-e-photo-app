@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_e_photograph_app/src/providers/UserGuest.dart';
+import 'package:provider/provider.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    UserGuest userGuest = Provider.of<UserGuest>(context);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -12,24 +15,29 @@ class MenuWidget extends StatelessWidget {
           DrawerHeader(
             child: Container(
               margin: EdgeInsets.only(top: 60.0),
-              child: Row(
+              child: Column(
                 children: <Widget>[
-                  Icon(Icons.person, color: Colors.white),
-                  FlatButton(
-                    onPressed: () {
-                      // Navigator.pushNamed(context, OwnerActivity.routeName);
-                    },
-                    child: Icon(
-                      Icons.info,
-                      color: Colors.white,
-                    ),
+                  Row(
+                    children: [
+                      Icon(Icons.person, color: Colors.white),
+                      Text(" " + userGuest.name,
+                          style: TextStyle(color: Colors.white))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.email, color: Colors.white),
+                      Text(" " + userGuest.email,
+                          style: TextStyle(color: Colors.white)),
+                    ],
                   )
                 ],
               ),
             ),
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/menu-img.jpg'), fit: BoxFit.cover),
+                  image: AssetImage('asset/img/menu-img.jpg'),
+                  fit: BoxFit.cover),
             ),
           ),
           ListTile(

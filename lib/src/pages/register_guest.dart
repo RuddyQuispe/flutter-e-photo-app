@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_e_photograph_app/src/libs/aws_client.dart';
+import 'package:flutter_e_photograph_app/src/libs/http.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RegisterGuest extends StatefulWidget {
@@ -78,7 +80,7 @@ class _RegisterGuestState extends State<RegisterGuest> {
               ],
             ),
             Divider(
-              color: Colors.deepPurple,
+              color: Colors.deepPurple[600],
             ),
             _button(),
           ],
@@ -306,11 +308,31 @@ class _RegisterGuestState extends State<RegisterGuest> {
       splashColor: Colors.grey,
       shape: StadiumBorder(),
       label: Text("Registrar Cuenta"),
-      onPressed: () {
-        print(this.nameUser);
-        print(this.email);
-        print(this.password);
-        print(this.phone);
+      onPressed: () async {
+        print("*************************************");
+        String photo1 = await uploadPhotography(
+            _image1); //"76ef91d1-cd52-408c-93d7-04822c5d8869.jpg"; //
+        String photo2 = await uploadPhotography(
+            _image2); //"c760c1b2-73ae-4819-91df-891ac53ad6ab.jpg"; //
+        String photo3 = await uploadPhotography(
+            _image3); //"480c4d2e-13d5-4c49-ab51-1443711a1184.jpg"; //
+        print("*************************************");
+        HTTP http = new HTTP();
+        Map response = await http.post('/api/auth/sign_up_guest', {
+          "name_user": this.nameUser,
+          "email": this.email,
+          "phone": this.phone,
+          "password": this.password,
+          "photo_1": photo1,
+          "photo_2": photo2,
+          "photo_3": photo3
+        });
+        if (response["token"] != null) {
+          print(response["message"]);
+        } else {
+          print("user not registered");
+        }
+        print(response.toString());
       },
     );
   }
