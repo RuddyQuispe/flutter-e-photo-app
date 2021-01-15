@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_e_photograph_app/src/pages/list_photography_page.dart';
 import 'package:flutter_e_photograph_app/src/pages/login_page.dart';
 import 'package:flutter_e_photograph_app/src/pages/register_guest.dart';
 import 'package:flutter_e_photograph_app/src/providers/Event.dart';
+import 'package:flutter_e_photograph_app/src/providers/ListPhotos.dart';
 import 'package:flutter_e_photograph_app/src/providers/UserGuest.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +17,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserGuest()),
-        ChangeNotifierProvider(create: (_) => Event())
+        ChangeNotifierProvider(create: (_) => Event()),
+        ChangeNotifierProvider(create: (_) => ListPhoto())
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -24,7 +27,9 @@ class MyApp extends StatelessWidget {
           routes: {
             HomePage.routeName: (BuildContext context) => HomePage(),
             LoginPage.routeName: (BuildContext context) => LoginPage(),
-            RegisterGuest.routeName: (BuildContext context) => RegisterGuest()
+            RegisterGuest.routeName: (BuildContext context) => RegisterGuest(),
+            ListPhotographyPage.routeName: (BuildContext context) =>
+                ListPhotographyPage()
           },
           theme: ThemeData.light()),
     );

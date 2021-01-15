@@ -7,9 +7,9 @@ class HTTP {
 
   Future<Map> get(String route) async {
     route = "$_url$route";
-    http.Response response = await http.get(route);
+    var response = await http.get(route);
     print(response);
-    Map data = await json.decode(response.body);
+    var data = jsonDecode(response.body);
     return data;
   }
 

@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_e_photograph_app/src/libs/aws_client.dart';
 import 'package:flutter_e_photograph_app/src/libs/http.dart';
+import 'package:flutter_e_photograph_app/src/pages/home_page.dart';
+import 'package:flutter_e_photograph_app/src/providers/UserGuest.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class RegisterGuest extends StatefulWidget {
   RegisterGuest({Key key}) : super(key: key);
@@ -24,6 +28,7 @@ class _RegisterGuestState extends State<RegisterGuest> {
 
   @override
   Widget build(BuildContext context) {
+    UserGuest userGuest = Provider.of<UserGuest>(context);
     return Scaffold(
         appBar: AppBar(
             centerTitle: true,
@@ -82,7 +87,7 @@ class _RegisterGuestState extends State<RegisterGuest> {
             Divider(
               color: Colors.deepPurple[600],
             ),
-            _button(),
+            _button(context, userGuest),
           ],
         ),
         floatingActionButton: Stack(
@@ -300,7 +305,7 @@ class _RegisterGuestState extends State<RegisterGuest> {
     }
   }
 
-  Widget _button() {
+  Widget _button(BuildContext context, UserGuest userGuest) {
     return RaisedButton.icon(
       icon: Icon(Icons.account_circle),
       textColor: Colors.white,
@@ -329,10 +334,16 @@ class _RegisterGuestState extends State<RegisterGuest> {
         });
         if (response["token"] != null) {
           print(response["message"]);
+          Toast.show("${response["message"]}  ${this.nameUser}!", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          userGuest.email = this.email;
+          userGuest.name = this.nameUser;
+          userGuest.token = response["token"];
+          Navigator.pushNamed(context, HomePage.routeName);
         } else {
-          print("user not registered");
+          Toast.show(response["message"], context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
         }
-        print(response.toString());
       },
     );
   }

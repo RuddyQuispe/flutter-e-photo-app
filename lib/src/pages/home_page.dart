@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_e_photograph_app/src/pages/list_photography_page.dart';
 import 'package:flutter_e_photograph_app/src/providers/Event.dart';
 import 'package:flutter_e_photograph_app/src/widgets/MenuWidget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -60,6 +61,7 @@ class HomePage extends StatelessWidget {
         event.owner = data["owner"];
         event.studioName = data["studio_name"];
         //location to next view HERE!!!
+        Navigator.pushNamed(context, ListPhotographyPage.routeName);
       } else {
         print("There isnt information");
       }

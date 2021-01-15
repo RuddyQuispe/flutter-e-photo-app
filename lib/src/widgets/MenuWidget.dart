@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_e_photograph_app/src/pages/home_page.dart';
 import 'package:flutter_e_photograph_app/src/providers/UserGuest.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key key}) : super(key: key);
@@ -43,57 +45,18 @@ class MenuWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.home, color: Colors.deepPurple[600]),
             title: Text('Home'),
-            subtitle: Text('Menu Principal'),
+            subtitle: Text('Dashboard'),
             onTap: () {
-              // Navigator.pushNamed(context, HomePage.routeName);
+              Navigator.pushNamed(context, HomePage.routeName);
             },
           ),
           ListTile(
-              leading:
-                  Icon(Icons.business_center, color: Colors.deepPurple[600]),
-              title: Text('Registrar Producto'),
-              subtitle: Text(
-                  'Registra tu producto aquí, no importa si tienes o no garantía'),
+              leading: Icon(Icons.exit_to_app, color: Colors.deepPurple[600]),
+              title: Text('Exit'),
+              subtitle: Text('Close App'),
               onTap: () {
-                // Navigator.pushNamed(context, ProductPage.routeName);
-              }),
-          ListTile(
-              leading: Icon(Icons.list, color: Colors.deepPurple[600]),
-              title: Text('Lista de Productos'),
-              subtitle: Text("Aqui podrás ver todos tus productos registrados"),
-              onTap: () {
-                // Navigator.pushNamed(context, ProductList.routeName);
-              }),
-          ListTile(
-              leading: Icon(Icons.center_focus_strong,
-                  color: Colors.deepPurple[600]),
-              title: Text('Solicitud Servicio Soporte Técnico'),
-              subtitle: Text('Envía tu solicitud de soporte para ser atendido'),
-              onTap: () {
-                // Navigator.pushNamed(context, RequestSupport.routeName);
-              }),
-          ListTile(
-            leading: Icon(Icons.art_track, color: Colors.deepPurple[600]),
-            title: Text('Mis Facturas'),
-            subtitle:
-                Text("Aquí podrás ver tus facturas Emitidas con RestTeam"),
-            onTap: () {
-              // Navigator.pushNamed(context, InvoiceList.routeName);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.list, color: Colors.deepPurple[600]),
-            title: Text('Lista de Polizas de Garantia'),
-            subtitle: Text("Aqui podras ver tus polizas de garantia"),
-            onTap: () {
-              // Navigator.pushNamed(context, GuaranteePolicytList.routeName);
-            },
-          ),
-          ListTile(
-              leading: Icon(Icons.settings, color: Colors.deepPurple[600]),
-              title: Text('Configuración'),
-              subtitle: Text('Aqui puedes Personalizar la app'),
-              onTap: () {
+                Toast.show("Close to the app", context,
+                    duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
                 // Navigator.pushNamed(context, SettingPage.routeName);
               }),
         ],
