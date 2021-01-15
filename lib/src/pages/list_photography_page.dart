@@ -56,8 +56,11 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
                 listPhoto.getCountPhotosAdded().toString(),
                 style: TextStyle(color: Colors.white),
               ),
-              child:
-                  IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {}),
+              child: IconButton(
+                  icon: Icon(Icons.shopping_cart),
+                  onPressed: () {
+                    print("listen to buy");
+                  }),
             )
           ],
         ),
@@ -168,7 +171,7 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
                                     color: Colors.green,
                                     splashColor: Colors.grey,
                                     shape: StadiumBorder(),
-                                    label: Text("Buy"),
+                                    label: Text("Add to Cart"),
                                     onPressed: () {
                                       Toast.show(
                                           "Added to Shopping Cart photo #${photography["id"]}",
@@ -177,7 +180,7 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
                                           gravity: Toast.BOTTOM);
                                       print("Register");
                                       addShoppingCart(
-                                          int.parse(photography["id"]),
+                                          photography["id"],
                                           double.parse(photography["price"]),
                                           photography["photo_name"],
                                           listPhoto);

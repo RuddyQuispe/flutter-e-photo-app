@@ -17,6 +17,12 @@ class ListPhoto with ChangeNotifier {
   }
 
   addListPhoto(Map<String, dynamic> photoDataAdd) {
+    int idNew = photoDataAdd["id"];
+    for (var i = 0; i < _listShoppingCart.length; i++) {
+      if (listShoppingCart[i]["id"] == idNew) {
+        return;
+      }
+    }
     this._listShoppingCart.add(photoDataAdd);
     _totalCost += photoDataAdd["price"];
     notifyListeners();
