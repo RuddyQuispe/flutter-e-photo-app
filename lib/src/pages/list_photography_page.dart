@@ -152,11 +152,12 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
                                     indent: 20,
                                     endIndent: 20,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0, right: 10.0),
-                                    child: getSocialRedPhotographer(
-                                        photography["array"]),
+                                  SizedBox(
+                                    child: ListView(
+                                        physics: BouncingScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        children: getSocialRedPhotographer(
+                                            photography["array"])),
                                   ),
                                   const Divider(
                                     color: Colors.black38,
@@ -250,7 +251,7 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
         });
   }
 
-  Row getSocialRedPhotographer(List<dynamic> listRedSocial) {
+  List getSocialRedPhotographer(List<dynamic> listRedSocial) {
     List<Widget> listWidget = new List<Widget>();
     for (var i = 0; i < listRedSocial.length; i++) {
       String redSocial = listRedSocial[i];
@@ -298,9 +299,7 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
           ));
       }
     }
-    return Row(
-      children: listWidget,
-    );
+    return listWidget;
   }
 
   void addShoppingCart(

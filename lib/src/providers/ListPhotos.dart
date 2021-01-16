@@ -27,4 +27,14 @@ class ListPhoto with ChangeNotifier {
     _totalCost += photoDataAdd["price"];
     notifyListeners();
   }
+
+  bool deletePhoto(int id) {
+    for (var i = 0; i < this._listShoppingCart.length; i++) {
+      if (this._listShoppingCart[i]["id"] == id) {
+        this._listShoppingCart.removeAt(i);
+        return true;
+      }
+    }
+    return false;
+  }
 }
