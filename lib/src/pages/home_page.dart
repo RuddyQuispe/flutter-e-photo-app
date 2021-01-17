@@ -20,16 +20,22 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Home'),
+        title: Text('Dashboard E-photo App'),
         backgroundColor: Colors.deepPurple[600],
       ),
       drawer: MenuWidget(),
-      body: Column(
-        children: [
-          Text(userGuest.email),
-          Text(userGuest.password),
-          Text(userGuest.name),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image(image: AssetImage('asset/img/e-photo-app.png')),
+            Text(
+              "Welcome ${userGuest.name} :-)",
+              style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {

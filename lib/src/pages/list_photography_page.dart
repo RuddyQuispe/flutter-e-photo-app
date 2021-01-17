@@ -1,12 +1,15 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_e_photograph_app/src/libs/http.dart';
+import 'package:flutter_e_photograph_app/src/pages/list_cart_photos_page.dart';
 import 'package:flutter_e_photograph_app/src/providers/Event.dart';
 import 'package:flutter_e_photograph_app/src/providers/ListPhotos.dart';
 import 'package:flutter_e_photograph_app/src/providers/UserGuest.dart';
 import 'package:flutter_e_photograph_app/src/widgets/MenuWidget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
@@ -22,6 +25,7 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
   List _listPhotographies = [];
   bool state = false;
   bool selected = false;
+  double _scale, _previusScale = 1.0;
   HTTP _http = new HTTP();
 
   _getProductList(int codeEvent, String emailGuest) async {
@@ -59,7 +63,7 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
               child: IconButton(
                   icon: Icon(Icons.shopping_cart),
                   onPressed: () {
-                    print("listen to buy");
+                    Navigator.pushNamed(context, ListCartPhotosPage.routeName);
                   }),
             )
           ],
@@ -71,136 +75,119 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
   Widget _getHomePageBody(
       BuildContext context, Event event, ListPhoto listPhoto) {
     if (_listPhotographies.length > 0 && state) {
+      MediaQueryData queryData = MediaQuery.of(context);
       return SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+        children: [
+          Padding(
+              padding: EdgeInsets.only(top: queryData.size.width * 0.20),
               child: CarouselSlider(
-                options: CarouselOptions(
-                  height: 600.0,
-                  initialPage: 2,
-                  enlargeCenterPage: true,
-                  autoPlay: true,
-                  autoPlayAnimationDuration: Duration(seconds: 3),
-                  scrollDirection:
-                      Axis.horizontal, // carousell on vertical or horizontal
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enableInfiniteScroll: true,
-                  aspectRatio: 2.0,
-                ),
-                items: _listPhotographies.map((var photography) {
-                  return Padding(
-                    padding: const EdgeInsets.all(1.0),
-                    child: Builder(
+                  options: CarouselOptions(
+                    height: 600.0,
+                    initialPage: 2,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    autoPlayAnimationDuration: Duration(seconds: 3),
+                    scrollDirection:
+                        Axis.horizontal, // carousell on vertical or horizontal
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: true,
+                    aspectRatio: 2.0,
+                  ),
+                  items: _listPhotographies.map((var photography) {
+                    return Builder(
                       builder: (context) {
                         return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 10.0),
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment
-                                      .bottomLeft, // 10% of the width, so there are ten blinds.
-                                  end: Alignment.topRight, // 10% of the width, so there are ten blinds.
-                                  colors: [
-                                    Colors.deepPurple[100],
-                                    Colors.deepPurple[500]
-                                  ]),
-                              borderRadius: BorderRadius.circular(15.0),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: Colors.black38,
-                                    blurRadius: 6.0,
-                                    offset: Offset(2.0, 5.0))
-                              ]),
-                          child: Column(
-                            children: <Widget>[
-                              InkWell(
-                                child: Container(
-                                  child: Image(
-                                      image: NetworkImage(
-                                          "https://bucket-e-photo-app-sw1.s3.amazonaws.com/${photography["photo_name"]}")),
-                                  height: 280,
-                                  width: 300,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment
+                                        .bottomLeft, // 10% of the width, so there are ten blinds.
+                                    end: Alignment.topRight, // 10% of the width, so there are ten blinds.
+                                    colors: [
+                                      Colors.deepPurple[100],
+                                      Colors.deepPurple[500]
+                                    ]),
+                                borderRadius: BorderRadius.circular(15.0),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                      color: Colors.black38,
+                                      blurRadius: 6.0,
+                                      offset: Offset(2.0, 5.0))
+                                ]),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  child: Container(
+                                    child: Image(
+                                        image: NetworkImage(
+                                            "https://bucket-e-photo-app-sw1.s3.amazonaws.com/${photography["photo_name"]}")),
+                                    height: 280,
+                                    width: 300,
+                                  ),
+                                  onTap: () => showModalSheet(
+                                      "https://bucket-e-photo-app-sw1.s3.amazonaws.com/${photography["photo_name"]}"),
                                 ),
-                                onTap: () => showModalSheet(
-                                    "https://bucket-e-photo-app-sw1.s3.amazonaws.com/${photography["photo_name"]}"),
-                              ),
-                              Column(
-                                children: [
-                                  ListTile(
-                                    contentPadding: EdgeInsets.all(5),
-                                    title: Text(
-                                        "Price: ${photography["price"]} \$us",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20.0,
-                                            color: Colors.black)),
-                                    subtitle: Text(
-                                      "Photographer: ${photography["name"]}\nEmail: ${photography["email"]}",
+                                ListTile(
+                                  contentPadding: EdgeInsets.only(left: 40.0),
+                                  title: Text(
+                                      "Price: ${photography["price"]} \$us",
                                       style: TextStyle(
-                                          fontSize: 12.0,
-                                          color: Colors.black54),
-                                    ),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 28.0,
+                                          color: Colors.black)),
+                                  subtitle: Text(
+                                    "Photographer: ${photography["name"]}\nEmail: ${photography["email"]}",
+                                    style: TextStyle(
+                                        fontSize: 15.0, color: Colors.black54),
                                   ),
-                                  const Divider(
-                                    color: Colors.black38,
-                                    height: 20,
-                                    thickness: 2,
-                                    indent: 20,
-                                    endIndent: 20,
-                                  ),
-                                  SizedBox(
-                                    child: ListView(
-                                        physics: BouncingScrollPhysics(),
-                                        scrollDirection: Axis.horizontal,
-                                        children: getSocialRedPhotographer(
-                                            photography["array"])),
-                                  ),
-                                  const Divider(
-                                    color: Colors.black38,
-                                    height: 20,
-                                    thickness: 2,
-                                    indent: 20,
-                                    endIndent: 20,
-                                  ),
-                                  RaisedButton.icon(
-                                    icon: Icon(Icons.shopping_cart),
-                                    textColor: Colors.white,
-                                    color: Colors.green,
-                                    splashColor: Colors.grey,
-                                    shape: StadiumBorder(),
-                                    label: Text("Add to Cart"),
-                                    onPressed: () {
-                                      Toast.show(
-                                          "Added to Shopping Cart photo #${photography["id"]}",
-                                          context,
-                                          duration: Toast.LENGTH_SHORT,
-                                          gravity: Toast.BOTTOM);
-                                      print("Register");
-                                      addShoppingCart(
-                                          photography["id"],
-                                          double.parse(photography["price"]),
-                                          photography["photo_name"],
-                                          listPhoto);
-                                    },
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        );
+                                ),
+                                Divider(
+                                  color: Colors.black38,
+                                  height: 20,
+                                  thickness: 2,
+                                  indent: 20,
+                                  endIndent: 20,
+                                ),
+                                Row(
+                                  children: getSocialRedPhotographer(
+                                      photography["array"]),
+                                ),
+                                Divider(
+                                  color: Colors.black38,
+                                  height: 20,
+                                  thickness: 2,
+                                  indent: 20,
+                                  endIndent: 20,
+                                ),
+                                RaisedButton.icon(
+                                  icon: Icon(Icons.shopping_cart),
+                                  textColor: Colors.white,
+                                  color: Colors.green,
+                                  splashColor: Colors.grey,
+                                  shape: StadiumBorder(),
+                                  label: Text("Add to Cart"),
+                                  onPressed: () {
+                                    Toast.show(
+                                        "Added to Shopping Cart photo #${photography["id"]}",
+                                        context,
+                                        duration: Toast.LENGTH_SHORT,
+                                        gravity: Toast.BOTTOM);
+                                    print("Register");
+                                    addShoppingCart(
+                                        photography["id"],
+                                        double.parse(photography["price"]),
+                                        photography["photo_name"],
+                                        listPhoto);
+                                  },
+                                )
+                              ],
+                            ));
                       },
-                    ),
-                  );
-                }).toList(),
-              ),
-            )
-          ],
-        ),
-      );
+                    );
+                  }).toList()))
+        ],
+      ));
     } else {
       return GestureDetector(
         onTap: () {
@@ -243,10 +230,37 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
         context: context,
         builder: (builder) {
           return Container(
-            child: Image(
-              image: NetworkImage(urlImage),
+            padding: EdgeInsets.all(10.0),
+            child: PinchZoomImage(
+              image: ColorFiltered(
+                colorFilter: ColorFilter.matrix([
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0
+                ]),
+                child: CachedNetworkImage(
+                  imageUrl: urlImage,
+                ),
+              ),
+              zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
             ),
-            padding: EdgeInsets.all(40.0),
           );
         });
   }

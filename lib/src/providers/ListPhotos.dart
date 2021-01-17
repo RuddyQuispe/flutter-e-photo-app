@@ -31,6 +31,7 @@ class ListPhoto with ChangeNotifier {
   bool deletePhoto(int id) {
     for (var i = 0; i < this._listShoppingCart.length; i++) {
       if (this._listShoppingCart[i]["id"] == id) {
+        _totalCost -= _listShoppingCart[i]["price"];
         this._listShoppingCart.removeAt(i);
         return true;
       }

@@ -6,7 +6,6 @@ import 'package:flutter_e_photograph_app/src/pages/payment_page.dart';
 import 'package:flutter_e_photograph_app/src/pages/register_guest.dart';
 import 'package:flutter_e_photograph_app/src/providers/Event.dart';
 import 'package:flutter_e_photograph_app/src/providers/ListPhotos.dart';
-import 'package:flutter_e_photograph_app/src/providers/PaymentCart.dart';
 import 'package:flutter_e_photograph_app/src/providers/UserGuest.dart';
 import 'package:provider/provider.dart';
 
@@ -21,13 +20,12 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserGuest()),
         ChangeNotifierProvider(create: (_) => Event()),
-        ChangeNotifierProvider(create: (_) => ListPhoto()),
-        ChangeNotifierProvider(create: (_) => PaymentCart())
+        ChangeNotifierProvider(create: (_) => ListPhoto())
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'E-Photo-App',
-          initialRoute: PaymentPage.routeName,
+          initialRoute: LoginPage.routeName,
           routes: {
             HomePage.routeName: (BuildContext context) => HomePage(),
             LoginPage.routeName: (BuildContext context) => LoginPage(),
