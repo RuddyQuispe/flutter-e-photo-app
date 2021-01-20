@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HTTP {
-  String _url = 'http://54.232.175.236:5000';
+  String _url =
+      'http://ec2-54-232-175-236.sa-east-1.compute.amazonaws.com:5000';
 
   Future<Map> get(String route) async {
     route = "$_url$route";

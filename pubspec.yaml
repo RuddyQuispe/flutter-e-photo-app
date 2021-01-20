@@ -46,6 +46,7 @@ dependencies:
   dio: ^3.0.10
   cached_network_image: ^2.5.0
   pinch_zoom_image_last: ^0.3.2
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   flutter_test:

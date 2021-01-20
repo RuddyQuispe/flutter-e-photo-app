@@ -171,8 +171,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       color: Color.fromRGBO(143, 148, 254, 1),
                       onPressed: () async {
-                        bool a = await signIn(userGuest);
-                        print("result $a");
+                        // bool a = await signIn(userGuest);
+                        // print("result $a");
                         if (await signIn(userGuest)) {
                           Navigator.pushNamed(context, HomePage.routeName);
                         }
@@ -211,14 +211,12 @@ class _LoginPageState extends State<LoginPage> {
       if (response["token"] != null) {
         Toast.show("${response["message"]}  ${response["name"]}!", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        print("aqui 1");
         userGuest.email = this.email;
-        print("aqui 2");
-        // userGuest.password = this.password;
-        print("aqui 3");
         userGuest.name = response["name"];
-        print("aqui 4");
         userGuest.token = response["token"];
+        userGuest.profile1 = response["photo_1"];
+        userGuest.profile2 = response["photo_2"];
+        userGuest.profile3 = response["photo_3"];
         print("aqui 5");
         print("user name: " + response["name"]);
         print("aqui 6");

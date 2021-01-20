@@ -160,7 +160,7 @@ class _RegisterGuestState extends State<RegisterGuest> {
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('Camera'),
                     onTap: () {
-                      _onImageButtonPressed(ImageSource.gallery, value);
+                      _onImageButtonPressed(ImageSource.camera, value);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -339,6 +339,10 @@ class _RegisterGuestState extends State<RegisterGuest> {
           userGuest.email = this.email;
           userGuest.name = this.nameUser;
           userGuest.token = response["token"];
+          userGuest.profile1 = photo1;
+          userGuest.profile2 = photo2;
+          userGuest.profile3 = photo3;
+          setState(() {});
           Navigator.pushNamed(context, HomePage.routeName);
         } else {
           Toast.show(response["message"], context,

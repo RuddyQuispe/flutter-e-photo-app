@@ -12,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListPhotographyPage extends StatefulWidget {
   ListPhotographyPage({Key key}) : super(key: key);
@@ -26,15 +27,23 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
   bool state = false;
   bool selected = false;
   double _scale, _previusScale = 1.0;
+  String _message = "Loading";
   HTTP _http = new HTTP();
 
   _getProductList(int codeEvent, String emailGuest) async {
     Map data = await _http.get(
         "/api/photography_manage/list_photographies/$codeEvent/$emailGuest");
     var val = data['list_photographies'];
-    setState(() {
-      _listPhotographies = val;
-    });
+    if (val.length > 0) {
+      setState(() {
+        _listPhotographies = val;
+      });
+    } else {
+      setState(() {
+        _listPhotographies = val;
+        _message = "You Doesn't have photos";
+      });
+    }
   }
 
   @override
@@ -171,7 +180,7 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
                                     Toast.show(
                                         "Added to Shopping Cart photo #${photography["id"]}",
                                         context,
-                                        duration: Toast.LENGTH_SHORT,
+                                        duration: Toast.LENGTH_LONG,
                                         gravity: Toast.BOTTOM);
                                     print("Register");
                                     addShoppingCart(
@@ -212,7 +221,7 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
                     Icon(Icons.cloud,
                         color: selected ? Colors.black87 : Colors.white70),
                     Text(
-                      "Loading",
+                      _message,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: selected ? Colors.black87 : Colors.white70),
@@ -277,7 +286,13 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
             shape: CircleBorder(),
             color: Colors.blue,
             child: FaIcon(FontAwesomeIcons.facebookF, color: Colors.white),
-            onPressed: () {},
+            onPressed: () async {
+              if (await canLaunch(redSocialList[1])) {
+                await launch(redSocialList[1]);
+              } else {
+                throw "Could not launch ${redSocialList[1]}";
+              }
+            },
           ));
           break;
         case 2:
@@ -285,7 +300,13 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
             color: Colors.blue[400],
             shape: CircleBorder(),
             child: FaIcon(FontAwesomeIcons.twitter, color: Colors.white),
-            onPressed: () {},
+            onPressed: () async {
+              if (await canLaunch(redSocialList[1])) {
+                await launch(redSocialList[1]);
+              } else {
+                throw "Could not launch ${redSocialList[1]}";
+              }
+            },
           ));
           break;
         case 3:
@@ -293,7 +314,13 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
             color: Colors.pink,
             shape: CircleBorder(),
             child: FaIcon(FontAwesomeIcons.instagram, color: Colors.white),
-            onPressed: () {},
+            onPressed: () async {
+              if (await canLaunch(redSocialList[1])) {
+                await launch(redSocialList[1]);
+              } else {
+                throw "Could not launch ${redSocialList[1]}";
+              }
+            },
           ));
           break;
         case 4:
@@ -301,7 +328,13 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
             color: Colors.black,
             shape: CircleBorder(),
             child: FaIcon(FontAwesomeIcons.tiktok, color: Colors.white),
-            onPressed: () {},
+            onPressed: () async {
+              if (await canLaunch(redSocialList[1])) {
+                await launch(redSocialList[1]);
+              } else {
+                throw "Could not launch ${redSocialList[1]}";
+              }
+            },
           ));
           break;
         default:
@@ -309,7 +342,13 @@ class _ListPhotographyPageState extends State<ListPhotographyPage> {
             color: Colors.black,
             shape: CircleBorder(),
             child: FaIcon(FontAwesomeIcons.tiktok, color: Colors.white),
-            onPressed: () {},
+            onPressed: () async {
+              if (await canLaunch(redSocialList[1])) {
+                await launch(redSocialList[1]);
+              } else {
+                throw "Could not launch ${redSocialList[1]}";
+              }
+            },
           ));
       }
     }

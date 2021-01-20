@@ -16,9 +16,42 @@ class MenuWidget extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             child: Container(
-              margin: EdgeInsets.only(top: 60.0),
+              margin: EdgeInsets.only(top: 20.0),
               child: Column(
                 children: <Widget>[
+                  Row(
+                    children: [
+                      Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      "https://bucket-e-photo-app-sw1.s3.amazonaws.com/${userGuest.profile1}")))),
+                      SizedBox(width: 5.0),
+                      Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      "https://bucket-e-photo-app-sw1.s3.amazonaws.com/${userGuest.profile2}")))),
+                      SizedBox(width: 5.0),
+                      Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      "https://bucket-e-photo-app-sw1.s3.amazonaws.com/${userGuest.profile3}")))),
+                    ],
+                  ),
                   Row(
                     children: [
                       Icon(Icons.person, color: Colors.white),
